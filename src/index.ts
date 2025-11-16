@@ -422,7 +422,7 @@ Return ONLY the commit message, nothing else. No explanations, just the message.
     return commits;
   }
 
-  private async getCommitInfo(hash: string, index: number): Promise<CommitInfo> {
+  private async getCommitInfo(hash: string): Promise<CommitInfo> {
     const oldMessage = this.execCommand(`git log -1 --format=%s ${hash}`).trim();
     const files = this.execCommand(`git diff-tree --no-commit-id --name-only -r ${hash}`)
       .trim()
@@ -430,12 +430,17 @@ Return ONLY the commit message, nothing else. No explanations, just the message.
       .filter(Boolean);
 
     let diff = '';
-    if (index === 0) {
-      // First commit - compare with empty tree
-      diff = this.execCommand(`git diff-tree --no-commit-id -p 4b825dc642cb6eb9a060e54bf8d69288fbee4904 ${hash}`);
-    } else {
-      // Regular commit - compare with parent
+    
+    // Check if this commit has a parent
+    try {
+      // Try to get the parent commit
+      this.execCommand(`git rev-parse ${hash}^`);
+      // If successful, compare with parent
       diff = this.execCommand(`git diff-tree --no-commit-id -p ${hash}^..${hash}`);
+    } catch {
+      // No parent exists (this is the first commit in the repository)
+      // Compare with empty tree
+      diff = this.execCommand(`git diff-tree --no-commit-id -p 4b825dc642cb6eb9a060e54bf8d69288fbee4904 ${hash}`);
     }
 
     return { hash, message: oldMessage, files, diff };
@@ -619,7 +624,7 @@ process.stdin.on('end', () => {
       const progress = ((i + 1) / commits.length * 100).toFixed(1);
       
       try {
-        const commitInfo = await this.getCommitInfo(hash, i);
+        const commitInfo = await this.getCommitInfo(hash);
         
         // Check if the commit message is already well-formed
         if (this.options.skipWellFormed) {
