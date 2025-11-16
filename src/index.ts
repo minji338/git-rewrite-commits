@@ -404,16 +404,20 @@ Return ONLY the commit message, nothing else. No explanations, just the message.
   }
 
   private getCommits(): string[] {
-    const commits = this.execCommand('git rev-list --reverse HEAD')
+    let command = 'git rev-list --reverse HEAD';
+    
+    // If maxCommits is specified, use git's built-in limiting to get the last N commits
+    if (this.options.maxCommits && this.options.maxCommits > 0) {
+      // Use -n flag to get only the last N commits (most recent)
+      // git rev-list -n N HEAD gets the N most recent commits in newest-first order
+      // Adding --reverse makes them oldest-first for processing
+      command = `git rev-list -n ${this.options.maxCommits} --reverse HEAD`;
+    }
+
+    const commits = this.execCommand(command)
       .trim()
       .split('\n')
       .filter(Boolean);
-
-    if (this.options.maxCommits && this.options.maxCommits > 0) {
-      // Get the last N commits instead of first N
-      const startIndex = Math.max(0, commits.length - this.options.maxCommits);
-      return commits.slice(startIndex);
-    }
 
     return commits;
   }
