@@ -38,16 +38,8 @@ export class GitCommitRewriter {
 
   constructor(options: RewriteOptions = {}) {
     const provider = options.provider || 'openai';
-    const model = options.model || (provider === 'ollama' ? 'llama3.2' : 'gpt-3.5-turbo');
+    const model = options.model || 'Meta-Llama-3.1-70B-Instruct';
     
-    // Check for API key if using OpenAI
-    if (provider === 'openai') {
-      const apiKey = options.apiKey || process.env.OPENAI_API_KEY;
-      if (!apiKey) {
-        throw new Error('OpenAI API key is required. Set OPENAI_API_KEY environment variable or pass it as an option.');
-      }
-    }
-
     this.provider = createProvider({
       provider: provider,
       apiKey: options.apiKey,
