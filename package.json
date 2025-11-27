@@ -5,7 +5,7 @@
   "type": "module",
   "main": "./dist/index.js",
   "bin": {
-    "git-rewrite-commits": "./dist/cli.js"
+    "git-rc": "./dist/cli.js"
   },
   "scripts": {
     "build": "tsc",
@@ -31,12 +31,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/f/git-rewrite-commits.git"
+    "url": "https://github.com/minji338/git-rewrite-commits.git"
   },
   "bugs": {
-    "url": "https://github.com/f/git-rewrite-commits/issues"
+    "url": "https://github.com/minji338/git-rewrite-commits/issues"
   },
-  "homepage": "https://github.com/f/git-rewrite-commits#readme",
+  "homepage": "https://github.com/minji338/git-rewrite-commits#readme",
   "engines": {
     "node": ">=16.0.0"
   },
