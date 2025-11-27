@@ -13,7 +13,7 @@ export class OpenAIProvider implements AIProvider {
   
   constructor(apiKey: string = 'EMPTY', model: string = 'Meta-Llama-3.1-70B-Instruct', baseUrl: string = 'http://localhost/v1' ) {
     this.openai = new OpenAI({ 
-      base_url
+      base_url,
       api_key
     });
     this.model = model;
