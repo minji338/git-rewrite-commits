@@ -173,17 +173,7 @@ program
       // Check for API key if using OpenAI
       const provider = options.provider || 'openai';
       const apiKey = options.apiKey || process.env.OPENAI_API_KEY;
-      
-      if (provider === 'openai' && !apiKey) {
-        console.error(chalk.red('\n❌ Error: OpenAI API key is required!'));
-        console.error(chalk.yellow('\nPlease provide it using one of these methods:'));
-        console.error(chalk.cyan('  1. Set environment variable: export OPENAI_API_KEY="your-api-key"'));
-        console.error(chalk.cyan('  2. Pass as argument: git-rewrite-commits --api-key "your-api-key"'));
-        console.error(chalk.dim('\nGet your API key at: https://platform.openai.com/api-keys'));
-        console.error(chalk.blue('\n💡 Tip: Use --provider ollama to use local models with Ollama instead'));
-        process.exit(1);
-      }
-      
+            
       // Only show informational messages when NOT in quiet mode
       if (provider === 'ollama' && !options.quiet) {
         console.log(chalk.blue('ℹ️  Using Ollama provider at ' + (options.ollamaUrl || 'http://localhost:11434')));
