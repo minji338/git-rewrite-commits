@@ -4,12 +4,18 @@ import { AIProvider } from './types.js';
 export class OpenAIProvider implements AIProvider {
   private openai: OpenAI;
   private model: string;
+  private baseUrl: string;
 
-  constructor(apiKey: string, model: string = 'gpt-3.5-turbo') {
-    if (!apiKey) {
-      throw new Error('OpenAI API key is required');
-    }
-    this.openai = new OpenAI({ apiKey });
+  constructor(model: string = 'llama3.2', baseUrl: string = 'http://localhost:11434') {
+    this.model = model;
+    this.baseUrl = baseUrl.replace(/\/$/, ''); // Remove trailing slash if present
+  }
+  
+  constructor(apiKey: string = 'EMPTY', model: string = 'Meta-Llama-3.1-70B-Instruct', baseUrl: string = 'http://localhost/v1' ) {
+    this.openai = new OpenAI({ 
+      base_url
+      api_key
+    });
     this.model = model;
   }
 
